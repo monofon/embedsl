@@ -1,0 +1,257 @@
+// Copyright 2011 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+goog.provide('embedsl.Argument');
+/**
+ * @fileoverview Provides the base classes for all AST expression nodes.
+ *
+ * ATTENTION: Do not edit. This file has been generated from
+ * proto/expression-proto.js, gen/gen-swizzlers.rb by rakefile. Edit those files
+ * instead.
+ *
+ * @author tramberend@google.com (Henrik Tramberend)
+ */
+goog.provide('embedsl.Expression');
+goog.provide('embedsl.Kind');
+
+goog.require('embedsl.Type');
+goog.require('goog.array');
+
+/**
+ * Enum for expression kinds.
+ *
+ * @enum {string}
+ */
+embedsl.Kind = {
+  ATTRIBUTE: 'attribute',
+  BUILTIN: 'builtin',
+  BUILTININPUT: 'builtininput',
+  CONSTANT: 'constant',
+  DISCARD: 'discard',
+  GETTER: 'getter',
+  INTERPOLATE: 'interpolate',
+  OPERATOR: 'operator',
+  REFERENCE: 'reference',
+  SWIZZLER: 'swizzler',
+  UNIFORM: 'uniform',
+  VIRTUAL: 'virtual',
+  ACCUMULATE: 'accumulate',
+  ACCUMULATOR: 'accumulator',
+  ITERATOR: 'iterator'
+};
+
+/**
+ * @typedef {boolean|number|embedsl.Expression|Array.<number>}
+ */
+embedsl.Argument;
+
+/**
+ * The base class for all expressions and AST nodes.
+ *
+ * @param {!embedsl.Kind} kind Kind of expression.
+ * @param {!embedsl.TypeInfo} typeInfo Type info for the expression.
+ * @param {?string=} name Name of the expression.
+ * @param {?string=} info Additional information.
+ * @param {Array.<embedsl.Argument>=} args Arguments of the expression.
+ * @constructor
+ */
+embedsl.Expression = function(kind, typeInfo, name, info, args) {
+  /** @type {!embedsl.Kind} */
+  this.kind = kind;
+
+  /** @type {!embedsl.TypeInfo} */
+  this.typeInfo = typeInfo;
+
+  /** @type {embedsl.Type} */
+  this.type = null;
+
+  /** @type {string} */
+  this.name = name || '';
+
+  /** @type {string} */
+  this.info = info || '';
+
+  /** @type {!Array.<!embedsl.Expression>} */
+  this.args = args || [];
+  for (var i = 0; i != this.args.length; i++) {
+    try {
+      this.args[i] = embedsl.Expression.replaceLiteral(this.args[i]);
+    }
+    catch (e) {
+      throw 'Argument ' + i + ': "' + this.args[i] + '" can not be converted to an expression:\n' +
+          this.toString(3);
+    }
+  }
+};
+
+/**
+ * Genrates a string with n spaces.
+ *
+ * @param {number} n Number of spaces.
+ * @return {string} String.
+ * @private
+ */
+embedsl.Expression.prototype.spaces_ = function(n) {
+  var spc = '';
+  for (var i = 0; i != n; i++)
+    spc += ' ';
+  return spc;
+};
+
+/**
+ * Prints an expression with proper indentation prepended.
+ *
+ * @param {number} indent Current indentation. Prepend to every new line.
+ * @param {number} depth Expression levels to print.
+ * @return {string} A fragment of the tree in human readable form.
+ * @private
+ */
+embedsl.Expression.prototype.toString_ = function(indent, depth) {
+  if (depth == 0) {
+    return '...';
+
+  } else {
+    var typeName = this.type ? this.type.glslName() : '<null>';
+
+    switch (this.kind) {
+    case embedsl.Kind.BUILTIN:
+    case embedsl.Kind.OPERATOR:
+    case embedsl.Kind.VIRTUAL:
+    case embedsl.Kind.INTERPOLATE:
+    case embedsl.Kind.SWIZZLER:
+      var argStrings = [];
+
+      for (var i = 0; i != this.args.length; i++)
+        argStrings.push(
+            this.args[i] != null ?
+                this.args[i].toString_(indent + 4, depth - 1) :
+                '<undefined>');
+
+      var args;
+      switch(argStrings.length) {
+      case 0:
+        args = '()';
+        break;
+      case 1:
+        args = '(' + argStrings[0] + ')';
+        break;
+      default:
+        args = '(\n' + this.spaces_(indent + 4) +
+            argStrings.join(',\n' + this.spaces_(indent + 4)) + '\n' +
+            this.spaces_(indent) + ')';
+      }
+      return typeName + ':' + this.name + args;
+
+    case embedsl.Kind.ATTRIBUTE:
+      return typeName + ':' + 'attribute(' + this.name + ')';
+
+    case embedsl.Kind.UNIFORM:
+      return typeName + ':' + 'uniform(' + this.name + ')';
+
+    case embedsl.Kind.CONSTANT:
+      return typeName + ':' + this.info;
+
+    default:
+      return typeName + ':' + this.name;
+    }
+  }
+};
+
+/**
+ * Produces a human readable indented string from an expression. Recursively
+ * descends the expression tree. Expressions below a specified depth are elided.
+ *
+ * @param {number=} depth Expression levels to print.
+ * @return {string} A fragment of the tree in human readable form.
+ */
+embedsl.Expression.prototype.toString = function(depth) {
+  return this.toString_(0, depth || 1);
+};
+
+/**
+ * Identifies Javascript literals and replaces them with appropriate
+ * expressions.
+ *
+ * @param {embedsl.Argument} arg Possible literal.
+ * @return {!embedsl.Expression} Expression describing the argument value.
+ * @protected
+ */
+embedsl.Expression.replaceLiteral = function(arg) {
+  if (!goog.isDefAndNotNull(arg)) {
+    throw "Argument is undefined.";
+
+  } else if (goog.isNumber(arg)) {
+    var str = Math.round(arg) == arg ? arg.toFixed(1) : arg.toString();
+    return new embedsl.Expression(
+        embedsl.Kind.CONSTANT,
+        embedsl.TypeInfo.ConstantFloat,
+        null,
+        str);
+
+  } else if (goog.isArray(arg)) {
+    /* TODO(tramberend) Currently assuming that arays are constructors for
+     * vector literals.  Arrays might be useful for other things too.
+     */
+    switch (arg.length) {
+    case 1: return embedsl.lang.f(
+        embedsl.Expression.replaceLiteral(arg[0]));
+
+    case 2: return embedsl.lang.vec2(
+        embedsl.Expression.replaceLiteral(arg[0]),
+        embedsl.Expression.replaceLiteral(arg[1]));
+
+    case 3: return embedsl.lang.vec3(
+        embedsl.Expression.replaceLiteral(arg[0]),
+        embedsl.Expression.replaceLiteral(arg[1]),
+        embedsl.Expression.replaceLiteral(arg[2]));
+
+    case 4: return embedsl.lang.vec4(
+        embedsl.Expression.replaceLiteral(arg[0]),
+        embedsl.Expression.replaceLiteral(arg[1]),
+        embedsl.Expression.replaceLiteral(arg[2]),
+        embedsl.Expression.replaceLiteral(arg[3]));
+    case 0:
+    default:
+      throw 'Javascript array literals in shader expressions not yet fully' +
+          'supported. Vector literals only.';
+    }
+
+  } else if (goog.isBoolean(arg)) {
+    return new embedsl.Expression(
+        embedsl.Kind.CONSTANT,
+        embedsl.TypeInfo.ConstantBool,
+        null,
+        (arg ? 'true' : 'false'));
+
+  } else {
+    return /** @type {!embedsl.Expression} */ (arg);
+  }
+};
+
+/**
+ * Creates a new reference expression with an already known type.
+ *
+ * @param {embedsl.Type} type The type.
+ * @param {string} name The name of the referenced variable.
+ * @return {!embedsl.Expression} The typed expression.
+ */
+embedsl.Expression.reference = function(type, name) {
+  var expression = new embedsl.Expression(
+      embedsl.Kind.REFERENCE,
+      new embedsl.TypeInfo(embedsl.TypeDependency.CONSTANT, type),
+      name);
+  expression.type = type;
+  return expression;
+};
+

@@ -1,0 +1,10 @@
+# Todo
+
+* Select a build system
+* Use to compile, test and deploy
+
+* Include Closure compiler's compiler.jar
+* Use DepsWriter to build deps.js
+* Use ClosureBuilder to compile examples
+
+* Incude and use Google JS Test

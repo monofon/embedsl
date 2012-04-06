@@ -1,0 +1,176 @@
+// Copyright 2011 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview This file contains factory functions that generate expressions
+ * for GLSL built-in functions, operators and constructors.
+ *
+ * ATTENTION: Do not edit. This file has been generated from
+ * proto/lang-proto.js, gen/gen-operators.rb, and gen/gen-functions.rb by
+ * rakefile. Edit those files instead.
+ *
+ * @author tramberend@google.com (Henrik Tramberend)
+ */
+goog.provide('embedsl.lang');
+
+goog.require('embedsl.Accumulate');
+goog.require('embedsl.Accumulator');
+goog.require('embedsl.Argument');
+goog.require('embedsl.Expression');
+goog.require('embedsl.Generator');
+goog.require('embedsl.Iterator');
+goog.require('embedsl.Virtual');
+goog.require('goog.vec');
+goog.require('goog.vec.Mat3');
+goog.require('goog.vec.Mat4');
+goog.require('goog.vec.Vec3');
+goog.require('goog.vec.Vec4');
+goog.require('util');
+
+/**
+ * Selects on of two expressions depending on the condition. Maps to the GLSL
+ * selection opertor ?:.
+ *
+ * @param {!(embedsl.Expression|boolean)} arg0 Condition.
+ * @param {!(embedsl.Expression|goog.vec.ArrayType|number|boolean)} arg1 True
+ * expression.
+ * @param {!(embedsl.Expression|goog.vec.ArrayType|number|boolean)} arg2 False
+ * expression.
+ * @return {!embedsl.Expression} Selection expression.
+ */
+embedsl.lang.select =
+    (function() {
+       var cached = new embedsl.TypeInfo(
+           embedsl.TypeDependency.SAME_AS_ARG1, null,
+           [new embedsl.ParameterTypeList([embedsl.Type.Bool, embedsl.Type.Any, embedsl.Type.Any])]);
+
+       return function(arg0, arg1, arg2) {
+         return new embedsl.Expression(
+             embedsl.Kind.BUILTIN, cached, 'select', null, [arg0, arg1, arg2]);
+       };
+     })();
+
+/**
+ * The expression will be evaluated in the vertex shader. The result is
+ * interpolated by the rasterizer.
+ *
+ * @param {!embedsl.Expression} exp Expression to be evaluated in the vertex shader.
+ * @return {!embedsl.Expression} Interpolated expression.
+ */
+embedsl.lang.perVertex = function(exp) {
+  return new embedsl.Expression(
+      embedsl.Kind.INTERPOLATE,
+      embedsl.TypeInfo.OneArgAnyType,
+      null,
+      null,
+      [exp]);
+};
+
+/**
+ * The expression will be evaluated in the vertex shader. The result is
+ * interpolated by the rasterizer and then normalized.
+ *
+ * @param {!embedsl.Expression} exp Expression to be evaluated in the vertex shader.
+ * @return {!embedsl.Expression} Interpolated and normalized expression.
+ */
+embedsl.lang.perVertexN = function(exp) {
+  return embedsl.lang.normalize(embedsl.lang.perVertex(exp));
+};
+
+/**
+ * Mark the expression as virtual. Virtual expression can be overriden later.
+ *
+ * @param {!embedsl.Expression} exp Expression.
+ * @return {!embedsl.Virtual} Virtual expression.
+ */
+embedsl.lang.virtual = function(exp) {
+  return new embedsl.Virtual(exp);
+};
+
+/**
+ * Creates an accumulating loop over a body expression.
+ *
+ * @param {embedsl.Generator} generator The generator for the iterators.
+ * @param {embedsl.Expression} init Initial value of the accumulator.
+ * @param {embedsl.Expression} body The loop body.
+ * @return {embedsl.Accumulate} The accumulate expression.
+ */
+embedsl.lang.accumulate = function(generator, init, body) {
+  return new embedsl.Accumulate(generator, init, body);
+};
+
+/**
+ * @type {embedsl.Accumulator}
+ */
+embedsl.lang.accumulator = new embedsl.Accumulator();
+
+/**
+ * @type {embedsl.Iterator}
+ */
+embedsl.lang.iterator = new embedsl.Iterator();
+
+/**
+ * Creates a generator for interators in a loop expression. Generates iterators
+ * from the interval [from,to) using step as the step size. From, to and step
+ * can be expressions. Step defaults to 1.
+ *
+ * @param {!embedsl.Argument} from Inclusive left border of the interval.
+ * @param {!embedsl.Argument} to Exclusive right border of the interval.
+ * @param {!embedsl.Argument=} step Step size.
+ * @return {embedsl.Generator} The generator.
+ */
+embedsl.lang.range = function(from, to, step) {
+  return new embedsl.Generator('range', embedsl.Type.Float, from, to, step || 1);
+};
+
+/**
+ * @param {!(embedsl.Expression|boolean)} cond If true, discard.
+ * @param {!embedsl.Argument} orElse Otherwise return this.
+ * @return {!embedsl.Expression} New expresison.
+ */
+embedsl.lang.discardOrElse = function(cond, orElse) {
+  return new embedsl.Expression(
+      embedsl.Kind.DISCARD,
+      new embedsl.TypeInfo(
+          embedsl.TypeDependency.SAME_AS_ARG1, null,
+          [new embedsl.ParameterTypeList([embedsl.Type.Bool, embedsl.Type.Any])]),
+      'discardOrElse', null,
+      [cond, orElse]);
+};
+
+/**
+ * @type {!embedsl.Expression}
+ */
+embedsl.lang.gl_FragCoord = new embedsl.Expression(
+    embedsl.Kind.BUILTININPUT,
+    new embedsl.TypeInfo(embedsl.TypeDependency.CONSTANT, embedsl.Type.Vec4),
+    'gl_FragCoord');
+
+/**
+ * @type {!embedsl.Expression}
+ */
+embedsl.lang.gl_FrontFacing = new embedsl.Expression(
+    embedsl.Kind.BUILTININPUT,
+    new embedsl.TypeInfo(embedsl.TypeDependency.CONSTANT, embedsl.Type.Bool),
+    'gl_FrontFacing');
+
+/**
+ * @type {!embedsl.Expression}
+ */
+embedsl.lang.gl_PointCoord = new embedsl.Expression(
+    embedsl.Kind.BUILTININPUT,
+    new embedsl.TypeInfo(embedsl.TypeDependency.CONSTANT, embedsl.Type.Vec2),
+    'gl_PointCoord');
+
+
