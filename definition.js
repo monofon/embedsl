@@ -15,7 +15,6 @@
 /**
  * @fileoverview Root of an expression tree.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Definition');
 goog.provide('embedsl.DefinitionKind');

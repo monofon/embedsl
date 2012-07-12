@@ -15,7 +15,6 @@
 /**
  * @fileoverview Simple embedsl example.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('cube');
 goog.provide('cube.Attributes');

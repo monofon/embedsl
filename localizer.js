@@ -21,7 +21,6 @@
  * Recursively extracts locals from the expression trees. Detected local
  * defintions are stored in ast.definitons and replace with references.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Localizer');
 

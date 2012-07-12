@@ -15,7 +15,6 @@
 /**
  * @fileoverview Generation of DOT files.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Plumber');
 

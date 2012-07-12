@@ -17,7 +17,6 @@
  * are suitable for us in OpenGL vertex buffers. Generated vertex attributes are
  * position, vertex and texcoord.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('scene.solids');
 

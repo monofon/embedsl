@@ -16,7 +16,6 @@
  * @fileoverview Defines the Inferrer class that traverses the trees and infers
  * the type of all yet untyped expressions from the types of their arguments.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Inferrer');
 

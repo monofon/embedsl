@@ -15,7 +15,6 @@
 /**
  * @fileoverview Defines an identifier renaming facility.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.NameStream');
 goog.provide('embedsl.GlobalNameStream');

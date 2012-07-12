@@ -19,7 +19,6 @@ goog.provide('embedsl.Argument');
  * proto/expression-proto.js, gen/gen-swizzlers.rb by rakefile. Edit those files
  * instead.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Expression');
 goog.provide('embedsl.Kind');

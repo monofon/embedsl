@@ -15,8 +15,6 @@
 /**
  * @fileoverview Describes the state that is passed between the
  * different compiler stages.
- *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Ast');
 

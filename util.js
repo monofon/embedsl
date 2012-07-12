@@ -15,7 +15,6 @@
 /**
  * @fileoverview Utility functions, mainly for debugging.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('util');
 

@@ -16,7 +16,6 @@
  * @fileoverview Definition of the Geometry class that represents geometry and
  * renders it.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('scene.Geometry');
 

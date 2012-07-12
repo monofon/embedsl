@@ -19,7 +19,6 @@
  * proto/lang-proto.js, gen/gen-operators.rb, and gen/gen-functions.rb by
  * rakefile. Edit those files instead.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.lang');
 

@@ -14,8 +14,6 @@
 
 /**
  * @fileoverview Expressions with expressions as arguments.
- *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Virtual');
 

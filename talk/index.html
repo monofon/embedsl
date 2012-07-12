@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>   
+    <script src="remark.min.js">
+      { "highlightStyle": "github",
+        "delaySetup": true }
+    </script>
+    <script src="jquery-1.7.1.min.js"></script>
+    </script>
+    <link href="slides.css" rel="stylesheet" type="text/css" media="screen">
+    </style>
+
+    <title>Embedsl - Embedded Shading Language</title>
+  </head>
+  <body>
+    <textarea id="source"></textarea>
+    <script>
+      $("#source").load("index.markdown", function() {
+        require("/vendor/marked").setOptions({gfm: true});
+        require("/remark.js").setup();
+        $("a").attr("target", "_blank");
+      });      
+    </script>
+    <div id="slideshow"></div>
+  </body>
+</html>

@@ -16,7 +16,6 @@
  * @fileoverview Defines the Program class which is the base class for all
  * embeded shader definitions.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Program');
 

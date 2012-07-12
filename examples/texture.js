@@ -15,7 +15,6 @@
 /**
  * @fileoverview Represent a WebGL texture object.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('scene.Texture');
 

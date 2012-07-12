@@ -15,7 +15,6 @@
 /**
  * @fileoverview Defines the base class for the compiler transformation stages.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Transformer');
 goog.provide('embedsl.TransformerFunction');

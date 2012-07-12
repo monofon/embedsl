@@ -15,7 +15,6 @@
 /**
  * @fileoverview Some global definitions for the scene utilities.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('scene.SolidAttributes');
 

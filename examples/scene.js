@@ -17,7 +17,6 @@
  * make genjsdeps.sh happy without having to fiddle with the requires
  * all the time. Will be removed eventually.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('scene');
 

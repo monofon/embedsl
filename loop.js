@@ -18,7 +18,6 @@
  * needed. The accumulate expression implements a basic folding operation. The
  * range epression generates sequences that can be used as index sets.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Accumulate');
 goog.provide('embedsl.Accumulator');

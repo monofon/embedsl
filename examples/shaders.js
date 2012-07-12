@@ -15,7 +15,6 @@
 /**
  * @fileoverview Shader definitions for the sphere example.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('shaders');
 goog.provide('shaders.AppUniforms');

@@ -18,7 +18,6 @@
 # specification follows the conventions used on the WebGL Reference
 # Card.
 #
-# author: tramberend@google.com (Henrik Tramberend)
 #
 require 'gen/type'
 include Type

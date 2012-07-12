@@ -21,7 +21,6 @@
 #
 # [n.n] refers to section n.n of the OpenGL ES 1.0 specification.
 #
-# author: tramberend@google.com (Henrik Tramberend)
 #
 
 # TODO(tramberend) Use Type::ConcreteType here.
@@ -225,7 +224,6 @@ puts <<EOT
  * ATTENTION: Do not edit. This file has been generated from
  * #{$0} by rakefile. Edit those files instead.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 EOT
 

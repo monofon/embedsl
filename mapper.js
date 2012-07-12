@@ -17,7 +17,6 @@
  * are positioned as late as possible and as early as neccessary in the
  * pipeline.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Mapper');
 

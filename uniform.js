@@ -17,7 +17,6 @@
  *
  * ATTENTION: This file has been generated. Do not edit.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Uniform');
 

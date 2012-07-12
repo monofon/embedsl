@@ -19,7 +19,6 @@
 # sense performancewise if we use the closure compiler to eliminate
 # unused function definitions.
 #
-# author: tramberend@google.com (Henrik Tramberend)
 #
 def permutate(str)
   ps = [];

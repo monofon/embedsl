@@ -15,7 +15,6 @@
 /**
  * @fileoverview Example for composition of shader modules.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('sphere');
 

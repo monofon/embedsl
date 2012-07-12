@@ -7,7 +7,6 @@
  * ATTENTION: Do not edit. This file has been generated from
  * gen/gen-attributes.rb by rakefile. Edit those files instead.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.AttributeBool');
 goog.provide('embedsl.AttributeBvec2');

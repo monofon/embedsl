@@ -15,7 +15,6 @@
 /**
  * @fileoverview Construction and use of cubemap textures.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('scene.Cubemap');
 

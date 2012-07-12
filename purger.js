@@ -15,7 +15,6 @@
 /**
  * @fileoverview Purges superflous local variables from the tree.
  *
- * @author tramberend@google.com (Henrik Tramberend)
  */
 goog.provide('embedsl.Purger');
 
