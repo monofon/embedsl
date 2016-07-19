@@ -6,5 +6,3 @@ representation is then transformed into GLSL source code.
 Embedsl needs the Closure Library. Install the library directly into the
 embedsl directory.
 
-> svn checkout http://closure-library.googlecode.com/svn/trunk/ closure-library
-
