@@ -1,6 +1,10 @@
-Embedsl is a Javascript library for the specification of GLSL shader programs in WebGL applications. The programmer uses a builder API to construct a set of expression trees that describe the shader program. This intermediate representation is then transformed into GLSL source code. 
+Embedsl is a Javascript library for the specification of GLSL shader programs
+in WebGL applications. The programmer uses a builder API to construct a set of
+expression trees that describe the shader program. This intermediate
+representation is then transformed into GLSL source code. 
 
-Embedsl needs the Closure Library. Install the library directly into the embedsl directory.
+Embedsl needs the Closure Library. Install the library directly into the
+embedsl directory.
 
 > svn checkout http://closure-library.googlecode.com/svn/trunk/ closure-library
 
